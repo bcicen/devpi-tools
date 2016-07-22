@@ -1,31 +1,50 @@
 import time
 import requests
 
-class DevpiResponse(object):
+class DevpiObject(object):
     """ Client response object """
-    def __init__(self, client):
-        self._client = client
+    _client = None
+    def get_json(self, path):
+        return self._client.get_json(path)
 
-class DevpiIndex(DevpiResponse):
+class DevpiIndex(DevpiObject):
     """ Represents a remote devpi index """
-    user = None
-    name = None
-    config = None
 
-    def _populate(self, user, name, config):
-        self.user = user
-        self.name = name
+    def __init__(self, client, path, config):
+        self._client = client
+        self.path = path
         self.config = config
+        _, self.user, self.name = path.split('/')
 
     @property
     def projects(self):
-        return self._client.get_json('/%s/%s' % (self.user, self.name))
+        res = self.get_json(self.path)
+        for p in res['result']['projects']:
+            yield DevpiProject(self._client, '%s/%s' % (self.path, p))
 
     def __repr__(self):
-        return '<DevpiIndex %s/%s>' % (self.user, self.name)
+        return '<devpi_tools.Index %s>' % self.path
 
     def __str__(self):
         return '%s/%s' % (self.user, self.name)
+
+class DevpiProject(DevpiObject):
+    """ Represents a remote devpi project """
+
+    def __init__(self, client, path):
+        self._client = client
+        self.path = path
+
+    @property
+    def versions(self):
+        return self.get_json(self.path)['result']
+
+    def __repr__(self):
+        return '<devpi_tools.Project %s>' % self.path
+
+    def __str__(self):
+        return '%s/%s' % (self.user, self.name)
+
 
 class DevpiClient(requests.Session):
     """ A very small client for connecting to devpi web API """
@@ -41,13 +60,13 @@ class DevpiClient(requests.Session):
         res.raise_for_status()
         return res.json()
 
+    def get_index(self, path):
+        return DevpiIndex(self, path, {})
+
     def indexes(self):
         res = self.get_json('/')['result']
         for k,v in res.items():
             user = k
             for name, config in v['indexes'].items():
-                index = DevpiIndex(self)
-                index.user = user
-                index.name = name
-                index.config = name
-                yield index
+                path = '/%s/%s' % (user, name)
+                yield DevpiIndex(self, path, config)
