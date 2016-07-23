@@ -6,9 +6,14 @@ class DevpiApiError(RuntimeError):
 
 class DevpiObject(object):
     """ Client response object """
+    path = None
     _client = None
+
     def get_json(self, path):
         return self._client.get_json(path)
+
+    def __str__(self):
+        return self.path
 
 class DevpiIndex(DevpiObject):
     """ Represents a remote devpi index """
@@ -21,15 +26,15 @@ class DevpiIndex(DevpiObject):
 
     @property
     def projects(self):
+        return list(self.iter_projects())
+
+    def iter_projects(self):
         res = self.get_json(self.path)
         for p in res['projects']:
             yield DevpiProject(self._client, '%s/%s' % (self.path, p))
 
     def __repr__(self):
         return '<devpitools.Index %s>' % self.path
-
-    def __str__(self):
-        return '%s/%s' % (self.user, self.name)
 
 class DevpiProject(DevpiObject):
     """ Represents a remote devpi project """
@@ -44,10 +49,6 @@ class DevpiProject(DevpiObject):
 
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
-
-    def __str__(self):
-        return '%s/%s' % (self.user, self.name)
-
 
 class DevpiClient(requests.Session):
     """ A very small client for connecting to devpi web API """
@@ -71,6 +72,7 @@ class DevpiClient(requests.Session):
                 return i
         raise DevpiApiError('no such index: %s' % path)
 
+    @property
     def indexes(self):
         return list(self.iter_indexes())
 
