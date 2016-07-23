@@ -23,7 +23,7 @@ class DevpiIndex(DevpiObject):
             yield DevpiProject(self._client, '%s/%s' % (self.path, p))
 
     def __repr__(self):
-        return '<devpi_tools.Index %s>' % self.path
+        return '<devpitools.Index %s>' % self.path
 
     def __str__(self):
         return '%s/%s' % (self.user, self.name)
@@ -40,7 +40,7 @@ class DevpiProject(DevpiObject):
         return self.get_json(self.path)['result']
 
     def __repr__(self):
-        return '<devpi_tools.Project %s>' % self.path
+        return '<devpitools.Project %s>' % self.path
 
     def __str__(self):
         return '%s/%s' % (self.user, self.name)
