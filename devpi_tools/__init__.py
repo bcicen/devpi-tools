@@ -1,6 +1,9 @@
 import time
 import requests
 
+class DevpiApiError(RuntimeError):
+    """ Error from devpi web interface """
+
 class DevpiObject(object):
     """ Client response object """
     _client = None
@@ -19,7 +22,7 @@ class DevpiIndex(DevpiObject):
     @property
     def projects(self):
         res = self.get_json(self.path)
-        for p in res['result']['projects']:
+        for p in res['projects']:
             yield DevpiProject(self._client, '%s/%s' % (self.path, p))
 
     def __repr__(self):
@@ -37,7 +40,7 @@ class DevpiProject(DevpiObject):
 
     @property
     def versions(self):
-        return self.get_json(self.path)['result']
+        return self.get_json(self.path)
 
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
@@ -56,17 +59,23 @@ class DevpiClient(requests.Session):
         url = self.base_url + path
         headers = { 'Accept': 'application/json' }
 
-        res = self.request(method, url, headers=headers)
-        res.raise_for_status()
-        return res.json()
+        res = self.request(method, url, headers=headers).json()
+        if 'message' in res.keys():
+            raise DevpiApiError(res['message'])
 
-    def get_index(self, path):
-        return DevpiIndex(self, path, {})
+        return res['result']
+
+    def index(self, path):
+        for i in self.iter_indexes():
+            if i.path == path:
+                return i
+        raise DevpiApiError('no such index: %s' % path)
 
     def indexes(self):
-        res = self.get_json('/')['result']
-        for k,v in res.items():
-            user = k
-            for name, config in v['indexes'].items():
+        return list(self.iter_indexes())
+
+    def iter_indexes(self):
+        for user, info in self.get_json('/').items():
+            for name, config in info['indexes'].items():
                 path = '/%s/%s' % (user, name)
                 yield DevpiIndex(self, path, config)
