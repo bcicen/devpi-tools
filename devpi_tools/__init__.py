@@ -1,4 +1,3 @@
-import time
 import requests
 
 class DevpiApiError(RuntimeError):
@@ -23,6 +22,9 @@ class DevpiIndex(DevpiObject):
         self.path = path
         self.config = config
         _, self.user, self.name = path.split('/')
+
+    def project(self, name):
+        return DevpiProject(self._client, '%s/%s' % (self.path, name))
 
     @property
     def projects(self):
