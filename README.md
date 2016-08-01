@@ -22,3 +22,10 @@ project = index.project('devpi-tools') # or fetch a single project/package by na
 
 project.versions #list of uploaded versions
 ```
+
+
+Another example, finding the latest version of a specific package, in a specific devpi index:
+```python
+all_versions = c.index('/root/pypi').project('requests').versions
+latest = max(all_versions.keys())
+```
