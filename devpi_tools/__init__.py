@@ -26,7 +26,6 @@ class DevpiIndex(DevpiObject):
     def project(self, name):
         return DevpiProject(self._client, '%s/%s' % (self.path, name))
 
-    @property
     def projects(self):
         return list(self.iter_projects())
 
@@ -45,7 +44,6 @@ class DevpiProject(DevpiObject):
         self._client = client
         self.path = path
 
-    @property
     def versions(self):
         return self.get_json(self.path)
 
@@ -74,7 +72,6 @@ class DevpiClient(requests.Session):
                 return i
         raise DevpiApiError('no such index: %s' % path)
 
-    @property
     def indexes(self):
         return list(self.iter_indexes())
 
