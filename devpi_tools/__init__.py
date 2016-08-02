@@ -44,6 +44,9 @@ class DevpiProject(DevpiObject):
         self._client = client
         self.path = path
 
+    def version(self, version):
+        return self.get_json('%s/%s' % (self.path, version))
+
     def versions(self):
         return self.get_json(self.path)
 
