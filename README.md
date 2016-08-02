@@ -20,7 +20,8 @@ index = client.index('/root/pypi') # or fetch a single index
 index.projects() # list all projects
 project = index.project('devpi-tools') # or fetch a single project/package by name
 
-project.versions() #list of uploaded versions
+project.versions() # list of uploaded versions
+project.version('1.0.1') # or fetch details on a specific version
 ```
 
 
