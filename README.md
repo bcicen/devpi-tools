@@ -27,6 +27,6 @@ project.version('1.0.1') # or fetch details on a specific version
 
 Another example, finding the latest version of a specific package, in a specific devpi index:
 ```python
-all_versions = c.index('/root/pypi').project('requests').versions
+all_versions = c.index('/root/pypi').project('requests').versions()
 latest = max(all_versions.keys())
 ```
