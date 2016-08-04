@@ -45,13 +45,35 @@ class DevpiProject(DevpiObject):
         self.path = path
 
     def version(self, version):
-        return self.get_json('%s/%s' % (self.path, version))
+        path = '%s/%s' % (self.path, version)
+        return DevpiVersion(path, self.get_json(path))
 
     def versions(self):
-        return self.get_json(self.path)
+        return list(self.iter_versions())
+
+    def iter_versions(self):
+        for vmeta in self.get_json(self.path):
+            path = '%s/%s' % (self.path, vmeta['version'])
+            yield DevpiVersion(path, vmeta)
 
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
+
+class DevpiVersion(DevpiObject):
+    """ Represents a dist of a remote devpi project """
+
+    def __init__(self, path, meta):
+        self.path = path
+        self.links = self._read_links(meta.pop('+links'))
+        for k,v in meta.items():
+            self.__setattr__(k,v)
+
+    @staticmethod
+    def _read_links(links):
+        return links
+
+    def __repr__(self):
+        return '<devpitools.Version %s>' % self.path
 
 class DevpiClient(requests.Session):
     """ A very small client for connecting to devpi web API """
