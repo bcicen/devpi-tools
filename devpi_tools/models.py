@@ -11,7 +11,7 @@ class DevpiObject(object):
     def __str__(self):
         return self.path
 
-class DevpiIndex(DevpiObject):
+class Index(DevpiObject):
     """ Represents a remote devpi index """
 
     def __init__(self, client, path, config):
@@ -21,7 +21,7 @@ class DevpiIndex(DevpiObject):
         _, self.user, self.name = path.split('/')
 
     def project(self, name):
-        return DevpiProject(self._client, '%s/%s' % (self.path, name))
+        return Project(self._client, '%s/%s' % (self.path, name))
 
     def projects(self):
         return list(self.iter_projects())
@@ -29,12 +29,12 @@ class DevpiIndex(DevpiObject):
     def iter_projects(self):
         res = self.get_json(self.path)
         for p in res['projects']:
-            yield DevpiProject(self._client, '%s/%s' % (self.path, p))
+            yield Project(self._client, '%s/%s' % (self.path, p))
 
     def __repr__(self):
         return '<devpitools.Index %s>' % self.path
 
-class DevpiProject(DevpiObject):
+class Project(DevpiObject):
     """ Represents a remote devpi project """
 
     def __init__(self, client, path):
@@ -43,7 +43,7 @@ class DevpiProject(DevpiObject):
 
     def version(self, version):
         path = '%s/%s' % (self.path, version)
-        return DevpiVersion(path, self.get_json(path))
+        return Version(path, self.get_json(path))
 
     def versions(self):
         return list(self.iter_versions())
@@ -51,12 +51,12 @@ class DevpiProject(DevpiObject):
     def iter_versions(self):
         for vmeta in self.get_json(self.path).values():
             path = '%s/%s' % (self.path, vmeta['version'])
-            yield DevpiVersion(path, vmeta)
+            yield Version(path, vmeta)
 
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
 
-class DevpiVersion(DevpiObject):
+class Version(DevpiObject):
     """ Represents a dist of a remote devpi project """
 
     def __init__(self, path, meta):
@@ -65,14 +65,13 @@ class DevpiVersion(DevpiObject):
         for k,v in meta.items():
             self.__setattr__(k,v)
 
-    @staticmethod
-    def _read_links(links):
-        return [ DevpiLink(self.path, l) for l in links ]
+    def _read_links(self, links):
+        return [ Link(self.path, l) for l in links ]
 
     def __repr__(self):
         return '<devpitools.Version %s>' % self.path
 
-class DevpiLink(DevpiObject):
+class Link(DevpiObject):
     """ Represents links associated with a remote devpi project """
 
     def __init__(self, path, meta):

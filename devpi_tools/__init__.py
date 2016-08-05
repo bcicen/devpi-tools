@@ -1,5 +1,5 @@
 import requests
-from .models import DevpiIndex
+from .models import Index
 
 class DevpiApiError(RuntimeError):
     """ Error from devpi web interface """
@@ -33,4 +33,4 @@ class DevpiClient(requests.Session):
         for user, info in self.get_json('/').items():
             for name, config in info['indexes'].items():
                 path = '/%s/%s' % (user, name)
-                yield DevpiIndex(self, path, config)
+                yield Index(self, path, config)
