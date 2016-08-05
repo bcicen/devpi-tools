@@ -71,7 +71,7 @@ class DevpiVersion(DevpiObject):
 
     @staticmethod
     def _read_links(links):
-        return [ DevpiLink(l) for l in links ]
+        return [ DevpiLink(self.path, l) for l in links ]
 
     def __repr__(self):
         return '<devpitools.Version %s>' % self.path
@@ -79,7 +79,8 @@ class DevpiVersion(DevpiObject):
 class DevpiLink(DevpiObject):
     """ Represents links associated with a remote devpi project """
 
-    def __init__(self, meta):
+    def __init__(self, path, meta):
+        self.path = path
         self.log = self._read_log(meta.pop('log'))
         for k,v in meta.items():
             self.__setattr__(k,v)
