@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 class DevpiApiError(RuntimeError):
     """ Error from devpi web interface """
@@ -52,7 +53,7 @@ class DevpiProject(DevpiObject):
         return list(self.iter_versions())
 
     def iter_versions(self):
-        for vmeta in self.get_json(self.path):
+        for vmeta in self.get_json(self.path).values():
             path = '%s/%s' % (self.path, vmeta['version'])
             yield DevpiVersion(path, vmeta)
 
@@ -70,10 +71,29 @@ class DevpiVersion(DevpiObject):
 
     @staticmethod
     def _read_links(links):
-        return links
+        return [ DevpiLink(l) for l in links ]
 
     def __repr__(self):
         return '<devpitools.Version %s>' % self.path
+
+class DevpiLink(DevpiObject):
+    """ Represents links associated with a remote devpi project """
+
+    def __init__(self, meta):
+        self.log = self._read_log(meta.pop('log'))
+        for k,v in meta.items():
+            self.__setattr__(k,v)
+
+    @staticmethod
+    def _read_log(log):
+        """ read log timestamp into datetime obj """
+        for l in log:
+            year, month, date, hour, minute, second = l['when']
+            l['when'] = datetime(year, month, date, hour, minute, second)
+        return log
+
+    def __repr__(self):
+        return '<devpitools.Link %s>' % self.path
 
 class DevpiClient(requests.Session):
     """ A very small client for connecting to devpi web API """
