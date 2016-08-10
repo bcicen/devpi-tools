@@ -62,6 +62,7 @@ class Version(DevpiObject):
     def __init__(self, path, meta):
         self.path = path
         self.links = self._read_links(meta.pop('+links'))
+        self.uploaded = sorted([ l.uploaded for l in self.links ])[0]
         for k,v in meta.items():
             self.__setattr__(k,v)
 
@@ -74,18 +75,21 @@ class Version(DevpiObject):
 class Link(DevpiObject):
     """ Represents links associated with a remote devpi project """
 
+    uploaded = datetime.fromtimestamp(0)
+
     def __init__(self, path, meta):
         self.path = path
         self.log = self._read_log(meta.pop('log'))
         for k,v in meta.items():
             self.__setattr__(k,v)
 
-    @staticmethod
-    def _read_log(log):
+    def _read_log(self, log):
         """ read log timestamp into datetime obj """
         for l in log:
             year, month, date, hour, minute, second = l['when']
             l['when'] = datetime(year, month, date, hour, minute, second)
+            if l['what'] == 'upload':
+                self.uploaded = l['when']
         return log
 
     def __repr__(self):
