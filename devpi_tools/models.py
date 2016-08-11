@@ -41,6 +41,10 @@ class Project(DevpiObject):
         self._client = client
         self.path = path
 
+    def latest_version(self):
+        """ Return latest project version based on upload time """
+        return sorted(self.versions(), key=lambda x: x.uploaded)[-1]
+
     def version(self, version):
         path = '%s/%s' % (self.path, version)
         return Version(path, self.get_json(path))
