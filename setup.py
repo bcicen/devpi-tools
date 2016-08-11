@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='devpi-tools',
-      version='0.3',
+      version='0.4',
       packages=['devpi_tools'],
       description='library for interacting with devpi servers via web API',
       author='Bradley Cicenas',
