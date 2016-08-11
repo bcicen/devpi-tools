@@ -5,7 +5,7 @@ class DevpiObject(object):
     path = None
     _client = None
 
-    def get_json(self, path):
+    def _get(self, path):
         return self._client.get_json(path)
 
     def __str__(self):
@@ -27,7 +27,7 @@ class Index(DevpiObject):
         return list(self.iter_projects())
 
     def iter_projects(self):
-        res = self.get_json(self.path)
+        res = self._get(self.path)
         for p in res['projects']:
             yield Project(self._client, '%s/%s' % (self.path, p))
 
@@ -47,13 +47,13 @@ class Project(DevpiObject):
 
     def version(self, version):
         path = '%s/%s' % (self.path, version)
-        return Version(path, self.get_json(path))
+        return Version(path, self._get(path))
 
     def versions(self):
         return list(self.iter_versions())
 
     def iter_versions(self):
-        for vmeta in self.get_json(self.path).values():
+        for vmeta in self._get(self.path).values():
             path = '%s/%s' % (self.path, vmeta['version'])
             yield Version(path, vmeta)
 
