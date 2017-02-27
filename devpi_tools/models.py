@@ -47,16 +47,17 @@ class Project(DevpiObject):
 
     def latest_version(self):
         """ Return latest project version based on upload time """
-        return sorted(self.versions(), key=lambda x: x.uploaded)[-1]
+        return self.versions()[-1]
 
     def version(self, version):
         path = '%s/%s' % (self.path, version)
         return Version(path, self._get(path))
 
     def versions(self):
-        return list(self.iter_versions())
+        v = list(self._iter_versions())
+        return sorted(v, key=lambda x: x.uploaded)
 
-    def iter_versions(self):
+    def _iter_versions(self):
         for vmeta in self._get(self.path).values():
             path = '%s/%s' % (self.path, vmeta['version'])
             yield Version(path, vmeta)
