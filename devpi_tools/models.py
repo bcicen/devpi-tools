@@ -8,6 +8,7 @@ class DevpiObject(object):
     def _get(self, path):
         return self._client.get_json(path)
 
+    # default str() method
     def __str__(self):
         return self.path
 
@@ -30,6 +31,9 @@ class Index(DevpiObject):
         res = self._get(self.path)
         for p in res['projects']:
             yield Project(self._client, '%s/%s' % (self.path, p))
+
+    def __str__(self):
+        return self.path[1:]
 
     def __repr__(self):
         return '<devpitools.Index %s>' % self.path
@@ -57,6 +61,9 @@ class Project(DevpiObject):
             path = '%s/%s' % (self.path, vmeta['version'])
             yield Version(path, vmeta)
 
+    def __str__(self):
+        return self.path.split('/')[-1]
+
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
 
@@ -73,6 +80,9 @@ class Version(DevpiObject):
     def _read_links(self, links):
         return [ Link(self.path, l) for l in links ]
 
+    def __str__(self):
+        return self.version
+
     def __repr__(self):
         return '<devpitools.Version %s>' % self.path
 
@@ -87,14 +97,17 @@ class Link(DevpiObject):
         for k,v in meta.items():
             self.__setattr__(k,v)
 
-    def _read_log(self, log):
+    def _read_log(self, lines):
         """ read log timestamp into datetime obj """
-        for l in log:
+        for l in lines:
             year, month, date, hour, minute, second = l['when']
             l['when'] = datetime(year, month, date, hour, minute, second)
             if l['what'] == 'upload':
                 self.uploaded = l['when']
-        return log
+        return lines
+
+    def __str__(self):
+        return self.href
 
     def __repr__(self):
         return '<devpitools.Link %s>' % self.path
