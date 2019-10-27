@@ -10,7 +10,7 @@ pip install devpi-tools
 ## Usage
 
 ```python
-from devpi_tools import DevpiClient
+from devpi_tools.devpi_connector import DevpiClient
 
 client = DevpiClient('http://127.0.0.1:3141')
 

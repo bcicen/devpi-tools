@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class DevpiObject(object):
     """ Client response object """
     path = None
@@ -11,6 +12,7 @@ class DevpiObject(object):
     # default str() method
     def __str__(self):
         return self.path
+
 
 class Index(DevpiObject):
     """ Represents a remote devpi index """
@@ -37,6 +39,7 @@ class Index(DevpiObject):
 
     def __repr__(self):
         return '<devpitools.Index %s>' % self.path
+
 
 class Project(DevpiObject):
     """ Represents a remote devpi project """
@@ -68,6 +71,7 @@ class Project(DevpiObject):
     def __repr__(self):
         return '<devpitools.Project %s>' % self.path
 
+
 class Version(DevpiObject):
     """ Represents a dist of a remote devpi project """
 
@@ -86,6 +90,7 @@ class Version(DevpiObject):
 
     def __repr__(self):
         return '<devpitools.Version %s>' % self.path
+
 
 class Link(DevpiObject):
     """ Represents links associated with a remote devpi project """
