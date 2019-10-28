@@ -1,0 +1,35 @@
+{
+  "0.0.1": {
+    "name": "devpi-tools",
+    "version": "0.0.1",
+    "summary": "devpi-tools",
+    "home_page": "",
+    "author": "",
+    "author_email": "",
+    "maintainer": "",
+    "maintainer_email": "",
+    "license": "",
+    "description": "UNKNOWN\n\n\n",
+    "keywords": "",
+    "platform": [],
+    "classifiers": [
+      "Development Status :: 4 - Beta",
+      "Topic :: Other/Nonlisted Topic"
+    ],
+    "download_url": "",
+    "supported_platform": [],
+    "comment": "",
+    "provides": [],
+    "requires": [],
+    "obsoletes": [],
+    "project_urls": [],
+    "provides_dist": [],
+    "obsoletes_dist": [],
+    "requires_dist": [
+    ],
+    "requires_external": [],
+    "requires_python": "",
+    "description_content_type": "",
+    "provides_extras": ""
+  }
+}

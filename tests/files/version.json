@@ -1,0 +1,55 @@
+{
+  "name": "devpi-tools",
+  "version": "0.0.1",
+  "summary": "devpi-tools",
+  "home_page": "",
+  "author": "Bradley Cicenas",
+  "author_email": "",
+  "maintainer": "",
+  "maintainer_email": "",
+  "license": "",
+  "description": "UNKNOWN\n\n\n",
+  "keywords": "",
+  "platform": [],
+  "classifiers": [
+    "Development Status :: 4 - Beta",
+    "Topic :: Other/Nonlisted Topic"
+  ],
+  "download_url": "",
+  "supported_platform": [],
+  "comment": "",
+  "provides": [],
+  "requires": [],
+  "obsoletes": [],
+  "project_urls": [],
+  "provides_dist": [],
+  "obsoletes_dist": [],
+  "requires_dist": [
+  ],
+  "requires_external": [],
+  "requires_python": "",
+  "description_content_type": "",
+  "provides_extras": "",
+  "+links": [
+    {
+      "rel": "releasefile",
+      "hash_spec": "sha256=c0221a32fb19d842311170a79b301add882ff9670a763c4f67a5d377dac40134",
+      "href": "http://localhost:3141/root/pypi/+f/c02/21a32fb19d842/devpi_tools-0.0.1-py3-none-any.whl",
+      "log": [
+        {
+          "what": "upload",
+          "who": "root",
+          "when": [
+            2019,
+            10,
+            28,
+            1,
+            34,
+            57
+          ],
+          "dst": "root/pypi"
+        }
+      ]
+    }
+  ]
+}
