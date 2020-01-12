@@ -1,6 +1,5 @@
-from devpi_tools.devpi_request import DevpiClient
 import json
-
+from devpi_tools import DevpiClient
 
 def mock_get_json_index(self, path, method='GET', **params):
     return {
