@@ -1,4 +1,7 @@
 # devpi-tools
+
+[![pypi][pypi]](https://pypi.org/project/devpi-tools/)
+
 Small Python library for interacting with devpi servers via web API
 
 ## Installing 
@@ -31,3 +34,5 @@ v = index.project('requests').latest_version()
 print('version: %s' % v.version)
 print('uploaded: %s' % v.uploaded)
 ```
+
+[pypi]: https://img.shields.io/pypi/v/devpi-tools?color=0b938a&logo=pypi&logoColor=%23ffffff&style=for-the-badge "devpi-tools"
