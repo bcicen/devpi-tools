@@ -11,7 +11,7 @@ setup(
   packages=['devpi_tools'],
   description='library for interacting with devpi servers via web API',
   long_description=long_description,
-  long_description_content_type='text/markdown'
+  long_description_content_type='text/markdown',
   author='Bradley Cicenas',
   author_email='bradley@vektor.nyc',
   url='https://github.com/bcicen/devpi-tools',
