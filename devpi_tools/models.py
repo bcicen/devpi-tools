@@ -99,7 +99,10 @@ class Link(DevpiObject):
 
     def __init__(self, path, meta):
         self.path = path
-        self.log = self._read_log(meta.pop('log'))
+        try:
+            self.log = self._read_log(meta.pop('log'))
+        except:
+            self.log = None
         for k,v in meta.items():
             self.__setattr__(k,v)
 
