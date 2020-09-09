@@ -7,7 +7,7 @@ with open(path.join(pwd, 'README.md'), encoding='utf-8') as of:
 
 setup(
   name='devpi-tools',
-  version='0.5.1',
+  version='0.5.2',
   packages=['devpi_tools'],
   description='library for interacting with devpi servers via web API',
   long_description=long_description,
