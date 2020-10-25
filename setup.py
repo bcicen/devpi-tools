@@ -7,7 +7,7 @@ with open(path.join(pwd, 'README.md'), encoding='utf-8') as of:
 
 setup(
   name='devpi-tools',
-  version='0.5.2',
+  version='0.5.3',
   packages=['devpi_tools'],
   description='library for interacting with devpi servers via web API',
   long_description=long_description,
@@ -17,13 +17,15 @@ setup(
   url='https://github.com/bcicen/devpi-tools',
   install_requires=['requests>=2.9.1'],
   license='http://opensource.org/licenses/MIT',
-  classifiers=(
+  include_package_data=True,
+  classifiers=[
       'Natural Language :: English',
       'Programming Language :: Python',
       'Intended Audience :: Developers',
       'Programming Language :: Python :: 2',
       'Programming Language :: Python :: 3',
+      'Programming Language :: Python :: 3.7',
       'License :: OSI Approved :: MIT License ',
-  ),
+  ],
   keywords='devpi pypi packaging devops',
 )
